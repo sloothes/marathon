@@ -142,6 +142,152 @@
 		<script src="/marathon/core/keyInputControls.js"></script>
 		<script src="/marathon/core/joystickControls.js"></script>
 
+
+		<script>
+
+		//	player-controller-tab-ui.js
+
+			TabUI.add( "Controller", "controller-tab" ); TabUI.append("Controller");
+
+			(function( tab ){
+
+			//	isGrounded input.
+				var row = document.createElement("h3"); row.textContent = "grounded:"; row.style.cssText = "margin:10px 15px;height:30px;";
+				var vect = document.createElement("div"); vect.style.cssText = "width:170px;height:40px;float:right;";
+				var prev = document.createElement("li"); prev.id = "grounded-decrease"; prev.innerHTML = "&#9668;"; 
+				prev.style.display = "inline"; prev.classList.add("btn","btn-primary","get-prev-btn","pull-left");
+				var next = document.createElement("li"); next.id = "grounded-increase"; next.innerHTML = "&#9658;";
+				next.style.display = "inline"; next.classList.add("btn","btn-primary","get-next-btn","pull-right");
+				var input = document.createElement("input"); input.id = "grounded-input";
+				input.setAttribute("placeholder", "value" ); input.classList.add("form-control","text-center");
+				input.style.cssText  = "color:#000;border:none;display:inline;width:80px;margin:0px 5px;"
+				input.style.cssText += "text-align:center;font-size:large;font-weigth:bold;background:none;";
+				vect.appendChild(prev); vect.appendChild(input); vect.appendChild(next); row.appendChild(vect); tab.appendChild( row );
+
+			})( TabUI.Controller.tab );
+
+			(function( tab ){
+
+			//	isIdling input.
+				var row = document.createElement("h3"); row.textContent = "idling:"; row.style.cssText = "margin:10px 15px;height:30px;";
+				var vect = document.createElement("div"); vect.style.cssText = "width:170px;height:40px;float:right;";
+				var prev = document.createElement("li"); prev.id = "idling-decrease"; prev.innerHTML = "&#9668;"; 
+				prev.style.display = "inline"; prev.classList.add("btn","btn-primary","get-prev-btn","pull-left");
+				var next = document.createElement("li"); next.id = "idling-increase"; next.innerHTML = "&#9658;";
+				next.style.display = "inline"; next.classList.add("btn","btn-primary","get-next-btn","pull-right");
+				var input = document.createElement("input"); input.id = "idling-input";
+				input.setAttribute("placeholder", "value" ); input.classList.add("form-control","text-center");
+				input.style.cssText  = "color:#000;border:none;display:inline;width:80px;margin:0px 5px;"
+				input.style.cssText += "text-align:center;font-size:large;font-weigth:bold;background:none;";
+				vect.appendChild(prev); vect.appendChild(input); vect.appendChild(next); row.appendChild(vect); tab.appendChild( row );
+
+			})( TabUI.Controller.tab );
+
+			(function( tab ){
+
+			//	isJumping input.
+				var row = document.createElement("h3"); row.textContent = "jumping:"; row.style.cssText = "margin:10px 15px;height:30px;";
+				var vect = document.createElement("div"); vect.style.cssText = "width:170px;height:40px;float:right;";
+				var prev = document.createElement("li"); prev.id = "jumping-decrease"; prev.innerHTML = "&#9668;"; 
+				prev.style.display = "inline"; prev.classList.add("btn","btn-primary","get-prev-btn","pull-left");
+				var next = document.createElement("li"); next.id = "jumping-increase"; next.innerHTML = "&#9658;";
+				next.style.display = "inline"; next.classList.add("btn","btn-primary","get-next-btn","pull-right");
+				var input = document.createElement("input"); input.id = "jumping-input";
+				input.setAttribute("placeholder", "value" ); input.classList.add("form-control","text-center");
+				input.style.cssText  = "color:#000;border:none;display:inline;width:80px;margin:0px 5px;"
+				input.style.cssText += "text-align:center;font-size:large;font-weigth:bold;background:none;";
+				vect.appendChild(prev); vect.appendChild(input); vect.appendChild(next); row.appendChild(vect); tab.appendChild( row );
+
+			})( TabUI.Controller.tab );
+
+			(function( tab ){
+
+			//	isOnSlope input.
+				var row = document.createElement("h3"); row.textContent = "on slope:"; row.style.cssText = "margin:10px 15px;height:30px;";
+				var vect = document.createElement("div"); vect.style.cssText = "width:170px;height:40px;float:right;";
+				var prev = document.createElement("li"); prev.id = "slope-decrease"; prev.innerHTML = "&#9668;"; 
+				prev.style.display = "inline"; prev.classList.add("btn","btn-primary","get-prev-btn","pull-left");
+				var next = document.createElement("li"); next.id = "slope-increase"; next.innerHTML = "&#9658;";
+				next.style.display = "inline"; next.classList.add("btn","btn-primary","get-next-btn","pull-right");
+				var input = document.createElement("input"); input.id = "slope-input";
+				input.setAttribute("placeholder", "value" ); input.classList.add("form-control","text-center");
+				input.style.cssText  = "color:#000;border:none;display:inline;width:80px;margin:0px 5px;"
+				input.style.cssText += "text-align:center;font-size:large;font-weigth:bold;background:none;";
+				vect.appendChild(prev); vect.appendChild(input); vect.appendChild(next); row.appendChild(vect); tab.appendChild( row );
+
+			})( TabUI.Controller.tab );
+
+			(function( tab ){
+
+			//	isRunning input.
+				var row = document.createElement("h3"); row.textContent = "running:"; row.style.cssText = "margin:10px 15px;height:30px;";
+				var vect = document.createElement("div"); vect.style.cssText = "width:170px;height:40px;float:right;";
+				var prev = document.createElement("li"); prev.id = "running-decrease"; prev.innerHTML = "&#9668;"; 
+				prev.style.display = "inline"; prev.classList.add("btn","btn-primary","get-prev-btn","pull-left");
+				var next = document.createElement("li"); next.id = "running-increase"; next.innerHTML = "&#9658;";
+				next.style.display = "inline"; next.classList.add("btn","btn-primary","get-next-btn","pull-right");
+				var input = document.createElement("input"); input.id = "running-input";
+				input.setAttribute("placeholder", "value" ); input.classList.add("form-control","text-center");
+				input.style.cssText  = "color:#000;border:none;display:inline;width:80px;margin:0px 5px;"
+				input.style.cssText += "text-align:center;font-size:large;font-weigth:bold;background:none;";
+				vect.appendChild(prev); vect.appendChild(input); vect.appendChild(next); row.appendChild(vect); tab.appendChild( row );
+
+			})( TabUI.Controller.tab );
+
+			(function( tab ){
+
+			//	maxSlopeGradient input.
+				var row = document.createElement("h3"); row.textContent = "max slope:"; row.style.cssText = "margin:10px 15px;height:30px;";
+				var vect = document.createElement("div"); vect.style.cssText = "width:170px;height:40px;float:right;";
+				var prev = document.createElement("li"); prev.id = "max-slope-decrease"; prev.innerHTML = "&#9668;"; 
+				prev.style.display = "inline"; prev.classList.add("btn","btn-primary","get-prev-btn","pull-left");
+				var next = document.createElement("li"); next.id = "max-slope-increase"; next.innerHTML = "&#9658;";
+				next.style.display = "inline"; next.classList.add("btn","btn-primary","get-next-btn","pull-right");
+				var input = document.createElement("input"); input.id = "max-slope-input";
+				input.setAttribute("placeholder", "value" ); input.classList.add("form-control","text-center");
+				input.style.cssText  = "color:#000;border:none;display:inline;width:80px;margin:0px 5px;"
+				input.style.cssText += "text-align:center;font-size:large;font-weigth:bold;background:none;";
+				vect.appendChild(prev); vect.appendChild(input); vect.appendChild(next); row.appendChild(vect); tab.appendChild( row );
+
+			})( TabUI.Controller.tab );
+
+			(function( tab ){
+
+			//	movementSpeed input.
+				var row = document.createElement("h3"); row.textContent = "speed:"; row.style.cssText = "margin:10px 15px;height:30px;";
+				var vect = document.createElement("div"); vect.style.cssText = "width:170px;height:40px;float:right;";
+				var prev = document.createElement("li"); prev.id = "speed-decrease"; prev.innerHTML = "&#9668;"; 
+				prev.style.display = "inline"; prev.classList.add("btn","btn-primary","get-prev-btn","pull-left");
+				var next = document.createElement("li"); next.id = "speed-increase"; next.innerHTML = "&#9658;";
+				next.style.display = "inline"; next.classList.add("btn","btn-primary","get-next-btn","pull-right");
+				var input = document.createElement("input"); input.id = "speed-input";
+				input.setAttribute("placeholder", "value" ); input.classList.add("form-control","text-center");
+				input.style.cssText  = "color:#000;border:none;display:inline;width:80px;margin:0px 5px;"
+				input.style.cssText += "text-align:center;font-size:large;font-weigth:bold;background:none;";
+				vect.appendChild(prev); vect.appendChild(input); vect.appendChild(next); row.appendChild(vect); tab.appendChild( row );
+
+			})( TabUI.Controller.tab );
+
+			(function( tab ){
+
+			//	direction input.
+				var row = document.createElement("h3"); row.textContent = "direction:"; row.style.cssText = "margin:10px 15px;height:30px;";
+				var vect = document.createElement("div"); vect.style.cssText = "width:170px;height:40px;float:right;";
+				var prev = document.createElement("li"); prev.id = "direction-decrease"; prev.innerHTML = "&#9668;"; 
+				prev.style.display = "inline"; prev.classList.add("btn","btn-primary","get-prev-btn","pull-left");
+				var next = document.createElement("li"); next.id = "direction-increase"; next.innerHTML = "&#9658;";
+				next.style.display = "inline"; next.classList.add("btn","btn-primary","get-next-btn","pull-right");
+				var input = document.createElement("input"); input.id = "direction-input";
+				input.setAttribute("placeholder", "value" ); input.classList.add("form-control","text-center");
+				input.style.cssText  = "color:#000;border:none;display:inline;width:80px;margin:0px 5px;"
+				input.style.cssText += "text-align:center;font-size:large;font-weigth:bold;background:none;";
+				vect.appendChild(prev); vect.appendChild(input); vect.appendChild(next); row.appendChild(vect); tab.appendChild( row );
+
+			})( TabUI.Controller.tab );
+
+
+		</script>
+
 		<script>
 
 			var url = "/characters/scarletblade/paim/SlowRun.fbx";
