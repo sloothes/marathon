@@ -27,7 +27,7 @@
 
 	//	controller.
 		player.controller = (function( object, radius ){
-			var h = 2*Math.PI;
+			var h = radius; // 2*Math.PI;
 			var controller = new MW.CharacterController( object, radius );
 			controller.movementSpeed = 10;
 			controller.maxSlopeGradient = 0.5;
@@ -35,7 +35,7 @@
 			world.add( controller );
 			(function reset(){
 				player.requestFrameID = requestAnimationFrame( reset );
-				if ( controller.center.y < -1 ) controller.center.set(0, h, -150);
+				if ( controller.center.y < -1 ) controller.center.set(0, radius, -150);
 			})();
 			return controller;
 		})( player, radius );
