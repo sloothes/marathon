@@ -346,28 +346,28 @@
 			(function( url ){
 
 				var loader = new THREE.FBXLoader();
-				loader.load( url, function( player ){
+				loader.load( url, function( group ){
 
 				//	cpu player.
-					scene.add( player );
 
-				//	var player = (function(){
-				//		var player = new THREE.Object3D();
-				//		player.position.set( 0, 0, 0 );
-				//		player.name = "cpu player";
-				//		scene.add( player );
-				//		return player;
-				//	})();
+					var player = (function(s){
+						var player = new THREE.Object3D();
+						player.position.set( 0,0,0 );
+						player.name = "cpu player";
+						scene.add( player );
+						return player;
+					})( 0.005 );
+
+				//	player controller.
 
 					var radius = 1;
 
-				//	player controller.
 					player.controller = (function( object, radius ){
 						var controller = new MW.CharacterController( object, radius );
 						controller.isRunning = true;
-						controller.movementSpeed = 10;
-						controller.maxSlopeGradient = 0.5;
+						controller.movementSpeed = 5;
 						controller.direction = Math.PI;
+						controller.maxSlopeGradient = 0.5;
 						world.add( controller );
 						(function reset(){
 							player.requestFrameID = requestAnimationFrame( reset );
@@ -376,8 +376,12 @@
 						return controller;
 					})( player, radius );
 
-					player.animationController = new MW.AnimationController( player );
-					debugMode && console.log( "animationController:", player.animationController );
+					var s = 0.005; 
+					group.scale.set( s,s,s );
+					group.position.y = -radius; 
+					player.add( group ); 
+
+					player.animationController = new MW.AnimationController( group );
 					player.animationController.play("mixamo.com");
 
 					var clock = new THREE.Clock();
@@ -385,6 +389,7 @@
 						requestAnimationFrame( update );
 						var delta = clock.getDelta();
 						player.animationController.update( delta );
+						if ( player.controller.center.y < -0.1 ) controller.center.set(0, 1, 0);
 					})();
 
 				});
