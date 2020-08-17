@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 
-		<title>marathon (pre-alpha v0.0.1)</title>
+		<title>marathon (pre-alpha v0.0.2)</title>
 
 		<meta charset="utf-8">
 		<meta name="generator" content="Three.js Editor">
@@ -344,6 +344,10 @@
 
 			})("/characters/scarletblade/paim/SlowRun.fbx");
 
+		</script>
+
+		<script>
+
 			(function( url ){
 
 				var loader = new THREE.FBXLoader();
@@ -388,12 +392,67 @@
 						requestAnimationFrame( update );
 						var delta = clock.getDelta();
 						player.animationController.update( delta );
-						if ( player.controller.center.y < -1 ) player.controller.center.set(0, 1, -1);
+						if ( player.controller.center.y < -1 ) player.controller.center.set(0.5, 1, -1);
 					})();
 
 				});
 
 			})("/marathon/characters/peasantgirl/SlowRun.fbx");
+
+		</script>
+
+		<script>
+
+			(function( url ){
+
+				var loader = new THREE.FBXLoader();
+				loader.load( url, function( group ){
+
+				//	cpu player.
+
+					var player = (function(s){
+						var player = new THREE.Object3D();
+						player.position.set( 0,0,0 );
+						player.name = "cpu player";
+						scene.add( player );
+						return player;
+					})( 0.005 );
+
+				//	player controller.
+
+					var radius = 1;
+
+					player.controller = (function( object, radius ){
+						var controller = new MW.CharacterController( object, radius );
+						controller.center.x =  0.5;
+						controller.center.z = -130;
+						controller.isRunning = true;
+						controller.movementSpeed = 5;
+						controller.direction = Math.PI;
+						controller.maxSlopeGradient = 0.5;
+						world.add( controller );
+						return controller;
+					})( player, radius );
+
+					var s = 0.01; 
+					group.scale.set( s,s,s );
+					group.position.y = -radius; 
+					player.add( group ); 
+
+					player.animationController = new MW.AnimationController( group );
+					player.animationController.play("mixamo.com");
+
+					var clock = new THREE.Clock();
+					(function update(){
+						requestAnimationFrame( update );
+						var delta = clock.getDelta();
+						player.animationController.update( delta );
+						if ( player.controller.center.y < -1 ) player.controller.center.set(-0.5, 1, -1);
+					})();
+
+				});
+
+			})("/marathon/characters/arissa/SlowRun.fbx");
 
 		</script>
 
