@@ -43,7 +43,7 @@ const joystickControls = (function(cameraController, characterController){
 			return;
 		}
 
-		characterController.isRunning = false;
+		characterController.isRunning = true; // false;
 
 	});
 

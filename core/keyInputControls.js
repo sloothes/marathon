@@ -61,7 +61,7 @@
 
 			if (  !movekey && turnkey ) {
 
-				characterController.isRunning = false; 
+				characterController.isRunning = true; // false;
 
 			} else if ( movekey || turnkey ) {
 
@@ -87,7 +87,7 @@
 
 		keyInputController.addEventListener( "movekeyoff", function() { 
 			resetMovementSpeedDirection();
-			characterController.isRunning = false; 
+			characterController.isRunning = true; // false; 
 		});
 
 		keyInputController.addEventListener( "jumpkeypress", function() { 
