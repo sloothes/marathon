@@ -149,6 +149,25 @@
 
 			TabUI.add( "Controller", "controller-tab" ); TabUI.append("Controller");
 
+			const player_droplist = (function( tab ){
+
+			//	Players droplist. When option is selected, switches to EditMode.
+				var row = document.createElement("h3"); row.textContent = "Player:"; row.style.cssText = "height:30px;"
+				var select = document.createElement("select"); select.id = "player-controller-droplist";
+				select.style.cssText  = "width:170px;color:#000;float:right;border:1px solid;border-radius:4px;";
+				select.style.cssText += "padding:2px 4px 4px 4px;font-size:20px;margin-left:10px;margin-right:15px;";
+
+				(function(){
+					var option = document.createElement("option");
+					option.value = ""; select.appendChild( option );
+				})();
+
+				row.appendChild( select ); tab.appendChild( row );
+
+				return select;
+
+			})( TabUI.Editor.tab );
+
 			(function( tab ){
 
 			//	isGrounded input.
