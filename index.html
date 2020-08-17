@@ -152,7 +152,7 @@
 			const player_droplist = (function( tab ){
 
 			//	Players droplist. When option is selected, switches to EditMode.
-				var row = document.createElement("h3"); row.textContent = "Player:"; row.style.cssText = "height:30px;"
+				var row = document.createElement("h3"); row.textContent = "Player:"; row.style.cssText = "height:40px;"
 				var select = document.createElement("select"); select.id = "player-controller-droplist";
 				select.style.cssText  = "width:170px;color:#000;float:right;border:1px solid;border-radius:4px;";
 				select.style.cssText += "padding:2px 4px 4px 4px;font-size:20px;margin-left:10px;margin-right:15px;";
@@ -172,7 +172,7 @@
 			(function( tab ){
 
 			//	isGrounded input.
-				var row = document.createElement("h3"); row.textContent = "grounded:"; row.style.cssText = "margin:10px 15px;height:30px;";
+				var row = document.createElement("h3"); row.textContent = "grounded:"; row.style.cssText = "margin:10px 15px 10px 0;height:30px;";
 				var vect = document.createElement("div"); vect.style.cssText = "width:170px;height:40px;float:right;";
 				var prev = document.createElement("li"); prev.id = "grounded-decrease"; prev.innerHTML = "&#9668;"; 
 				prev.style.display = "inline"; prev.classList.add("btn","btn-primary","get-prev-btn","pull-left");
@@ -189,7 +189,7 @@
 			(function( tab ){
 
 			//	isIdling input.
-				var row = document.createElement("h3"); row.textContent = "idling:"; row.style.cssText = "margin:10px 15px;height:30px;";
+				var row = document.createElement("h3"); row.textContent = "idling:"; row.style.cssText = "margin:10px 15px 10px 0;height:30px;";
 				var vect = document.createElement("div"); vect.style.cssText = "width:170px;height:40px;float:right;";
 				var prev = document.createElement("li"); prev.id = "idling-decrease"; prev.innerHTML = "&#9668;"; 
 				prev.style.display = "inline"; prev.classList.add("btn","btn-primary","get-prev-btn","pull-left");
@@ -206,7 +206,7 @@
 			(function( tab ){
 
 			//	isJumping input.
-				var row = document.createElement("h3"); row.textContent = "jumping:"; row.style.cssText = "margin:10px 15px;height:30px;";
+				var row = document.createElement("h3"); row.textContent = "jumping:"; row.style.cssText = "margin:10px 15px 10px 0;height:30px;";
 				var vect = document.createElement("div"); vect.style.cssText = "width:170px;height:40px;float:right;";
 				var prev = document.createElement("li"); prev.id = "jumping-decrease"; prev.innerHTML = "&#9668;"; 
 				prev.style.display = "inline"; prev.classList.add("btn","btn-primary","get-prev-btn","pull-left");
@@ -223,7 +223,7 @@
 			(function( tab ){
 
 			//	isOnSlope input.
-				var row = document.createElement("h3"); row.textContent = "on slope:"; row.style.cssText = "margin:10px 15px;height:30px;";
+				var row = document.createElement("h3"); row.textContent = "on slope:"; row.style.cssText = "margin:10px 15px 10px 0;height:30px;";
 				var vect = document.createElement("div"); vect.style.cssText = "width:170px;height:40px;float:right;";
 				var prev = document.createElement("li"); prev.id = "slope-decrease"; prev.innerHTML = "&#9668;"; 
 				prev.style.display = "inline"; prev.classList.add("btn","btn-primary","get-prev-btn","pull-left");
@@ -240,7 +240,7 @@
 			(function( tab ){
 
 			//	isRunning input.
-				var row = document.createElement("h3"); row.textContent = "running:"; row.style.cssText = "margin:10px 15px;height:30px;";
+				var row = document.createElement("h3"); row.textContent = "running:"; row.style.cssText = "margin:10px 15px 10px 0;height:30px;";
 				var vect = document.createElement("div"); vect.style.cssText = "width:170px;height:40px;float:right;";
 				var prev = document.createElement("li"); prev.id = "running-decrease"; prev.innerHTML = "&#9668;"; 
 				prev.style.display = "inline"; prev.classList.add("btn","btn-primary","get-prev-btn","pull-left");
@@ -257,7 +257,7 @@
 			(function( tab ){
 
 			//	maxSlopeGradient input.
-				var row = document.createElement("h3"); row.textContent = "maxslop:"; row.style.cssText = "margin:10px 15px;height:30px;";
+				var row = document.createElement("h3"); row.textContent = "maxslop:"; row.style.cssText = "margin:10px 15px 10px 0;height:30px;";
 				var vect = document.createElement("div"); vect.style.cssText = "width:170px;height:40px;float:right;";
 				var prev = document.createElement("li"); prev.id = "max-slope-decrease"; prev.innerHTML = "&#9668;"; 
 				prev.style.display = "inline"; prev.classList.add("btn","btn-primary","get-prev-btn","pull-left");
@@ -274,7 +274,7 @@
 			(function( tab ){
 
 			//	movementSpeed input.
-				var row = document.createElement("h3"); row.textContent = "speed:"; row.style.cssText = "margin:10px 15px;height:30px;";
+				var row = document.createElement("h3"); row.textContent = "speed:"; row.style.cssText = "margin:10px 15px 10px 0;height:30px;";
 				var vect = document.createElement("div"); vect.style.cssText = "width:170px;height:40px;float:right;";
 				var prev = document.createElement("li"); prev.id = "speed-decrease"; prev.innerHTML = "&#9668;"; 
 				prev.style.display = "inline"; prev.classList.add("btn","btn-primary","get-prev-btn","pull-left");
@@ -291,7 +291,7 @@
 			(function( tab ){
 
 			//	direction input.
-				var row = document.createElement("h3"); row.textContent = "direction:"; row.style.cssText = "margin:10px 15px;height:30px;";
+				var row = document.createElement("h3"); row.textContent = "direction:"; row.style.cssText = "margin:10px 15px 10px 0;height:30px;";
 				var vect = document.createElement("div"); vect.style.cssText = "width:170px;height:40px;float:right;";
 				var prev = document.createElement("li"); prev.id = "direction-decrease"; prev.innerHTML = "&#9668;"; 
 				prev.style.display = "inline"; prev.classList.add("btn","btn-primary","get-prev-btn","pull-left");
