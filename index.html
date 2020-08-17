@@ -326,12 +326,12 @@
 					localPlayer.controller.center.z = -130;
 					localPlayer.controller.isRunning = true;
 					localPlayer.controller.direction += Math.PI; // important!
+					localPlayer.controller.movementSpeed = 5.01; // debug!
 					localPlayer.getObjectByName("local helper").visible = false;
 
 					localPlayer.animationController = new MW.AnimationController( group );
 					debugMode && console.log( "animationController:", localPlayer.animationController );
-
-					localPlayer.animationController.play("mixamo.com");
+					localPlayer.animationController.play("mixamo.com"); // important!
 
 					var clock = new THREE.Clock();
 					(function update(){
