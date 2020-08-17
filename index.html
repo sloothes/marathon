@@ -309,36 +309,87 @@
 
 		<script>
 
-			var url = "/characters/scarletblade/paim/SlowRun.fbx";
-			var loader = new THREE.FBXLoader();
-			loader.load( url, function( group ){
+			(function( url ){
 
-			//	object is THREE.Group.
-				group.name = "Paim";
-			//	var s = 1; group.scale.set(s,s,s); // important!
-				group.position.y = -localPlayer.controller.radius;
-				debugMode && console.log( group ); 
+				var loader = new THREE.FBXLoader();
+				loader.load( url, function( group ){
 
-			//	Add group to scene before animation controller.
-				localPlayer.add( group ); 
-				localPlayer.controller.center.z = -130;
-				localPlayer.controller.isRunning = true;
-				localPlayer.controller.direction += Math.PI; // important!
-				localPlayer.getObjectByName("local helper").visible = false;
+				//	object is THREE.Group.
+					group.name = "Paim";
+				//	var s = 1; group.scale.set(s,s,s); // important!
+					group.position.y = -localPlayer.controller.radius;
+					debugMode && console.log( group ); 
 
-				localPlayer.animationController = new MW.AnimationController( group );
-				debugMode && console.log( "animationController:", localPlayer.animationController );
+				//	Add group to scene before animation controller.
+					localPlayer.add( group ); 
+					localPlayer.controller.center.z = -130;
+					localPlayer.controller.isRunning = true;
+					localPlayer.controller.direction += Math.PI; // important!
+					localPlayer.getObjectByName("local helper").visible = false;
 
-				localPlayer.animationController.play("mixamo.com");
+					localPlayer.animationController = new MW.AnimationController( group );
+					debugMode && console.log( "animationController:", localPlayer.animationController );
 
-				var clock = new THREE.Clock();
-				(function update(){
-					requestAnimationFrame( update );
-					var delta = clock.getDelta();
-					localPlayer.animationController.update( delta );
-				})();
+					localPlayer.animationController.play("mixamo.com");
 
-			});
+					var clock = new THREE.Clock();
+					(function update(){
+						requestAnimationFrame( update );
+						var delta = clock.getDelta();
+						localPlayer.animationController.update( delta );
+					})();
+
+				});
+
+			})("/characters/scarletblade/paim/SlowRun.fbx");
+
+			(function( url ){
+
+				var loader = new THREE.FBXLoader();
+				loader.load( url, function( player ){
+
+				//	cpu player.
+					scene.add( player );
+
+				//	var player = (function(){
+				//		var player = new THREE.Object3D();
+				//		player.position.set( 0, 0, 0 );
+				//		player.name = "cpu player";
+				//		scene.add( player );
+				//		return player;
+				//	})();
+
+					var radius = 1;
+
+				//	player controller.
+					player.controller = (function( object, radius ){
+						var controller = new MW.CharacterController( object, radius );
+						controller.isRunning = true;
+						controller.movementSpeed = 10;
+						controller.maxSlopeGradient = 0.5;
+						controller.direction = Math.PI;
+						world.add( controller );
+						(function reset(){
+							player.requestFrameID = requestAnimationFrame( reset );
+							if ( controller.center.y < -0.1 ) controller.center.set(0, 1, 0);
+						})();
+						return controller;
+					})( player, radius );
+
+					player.animationController = new MW.AnimationController( player );
+					debugMode && console.log( "animationController:", player.animationController );
+					player.animationController.play("mixamo.com");
+
+					var clock = new THREE.Clock();
+					(function update(){
+						requestAnimationFrame( update );
+						var delta = clock.getDelta();
+						player.animationController.update( delta );
+					})();
+
+				});
+
+			})("/marathon/characters/mannequin/SlowRun.fbx");
 
 		</script>
 
