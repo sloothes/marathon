@@ -389,7 +389,7 @@
 						requestAnimationFrame( update );
 						var delta = clock.getDelta();
 						player.animationController.update( delta );
-						if ( player.controller.center.y < -0.1 ) controller.center.set(0, 1, 0);
+						if ( player.controller.center.y < -0.1 ) controller.center.set(0, 1, -100);
 					})();
 
 				});
