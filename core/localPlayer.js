@@ -35,7 +35,7 @@
 			world.add( controller );
 			(function reset(){
 				player.requestFrameID = requestAnimationFrame( reset );
-				if ( controller.center.y < -1 ) controller.center.set(0, radius, -150);
+				if ( controller.center.y < -1 ) controller.center.set(0, 1, 0);
 			})();
 			return controller;
 		})( player, radius );
