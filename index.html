@@ -356,7 +356,7 @@
 					img.addEventListener("load", function(){
 
 					//	Matrix.
-						var minHeight = 0; var maxHeight = 1;
+						var minHeight = 0; var maxHeight = 10;
 						var matrix = img2matrix( img, img.width, img.height, minHeight, maxHeight );
 
 					//  Geometry.
@@ -400,8 +400,8 @@
 
 						var i, j;
 						var matrix = [];
-						var canvas = document.createElement( 'canvas' ),
-							ctx = canvas.getContext( '2d' );
+						var canvas = document.createElement( "canvas" ),
+							ctx = canvas.getContext( "2d" );
 						var imgData, pixel, channels = 4;
 						var heightRange = maxHeight - minHeight;
 						var heightData;
