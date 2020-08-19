@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+
+		<title>marathon (pre-alpha v0.0.3)</title>
+
+		<meta charset="utf-8">
+		<meta name="generator" content="Three.js Editor">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+		<link rel="stylesheet" href="/css/joystick.css">
+		<link rel="stylesheet" href="/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/css/bootbox-dialoges.css">
+		<link rel="stylesheet" href="/css/jcrop.css">
+
+		<script src="/js/watch.js"></script>
+		<script src="/js/Objectid.js"></script>
+		<script src="/js/jquery.min.js"></script> 
+		<script src="/js/system.min.js"></script>
+		<script src="/js/signals.min.js"></script>
+		<script src="/js/inflate.min.js"></script>
+		<script src="/js/zangodb.min.js"></script>
+		<script src="/js/bootstrap.min.js"></script>
+		<script src="/js/validator.min.js"></script>
+		<script src="/js/hold-event.min.js"></script>
+		<script src="/js/jcrop.js"></script>
+
+		<style>
+
+			body {
+				margin: 0px;
+				font-size: 13px;
+				font-family: sans-serif;
+				background-repeat: repeat;
+				background-image: url("https://i.imgur.com/rnZZU0i.png") !important;
+				overflow: hidden;
+			}
+
+			#loading-bar {
+				width:100%;
+				height:100%;
+				top:0; left:0;
+				position:fixed;
+				display:flex;
+				align-items:center;
+				justify-content:center;
+			}
+
+			.middle > * {
+				top:0; 
+				left:0;
+				right:0;
+				bottom:0;
+				margin:auto;
+				position:absolute;
+			}
+
+			#joystick1 {
+				right: calc(40px + 370px);
+			}
+			
+			#jumpButton {
+				right: calc(105px + 370px);
+			}
+
+			.btn-matcap,
+			.btn-terrain {
+				padding:0;
+				float:left;
+				width:55px;
+				height:55px;
+				border:1px solid;
+				border-radius:4px;
+				margin-right:4px;
+				margin-bottom:4px;
+				display:inline-block;
+			}
+
+			.btn-matcap + .btn-matcap,
+			.btn-terrain + .btn-terrain {
+				margin-right:4px;
+			}
+
+		</style>
+	</head>
+
+	<body ontouchstart="">
+
+		<script src="/marathon/js/TabUI.js"></script>
+
+		<script>
+			const debugMode = true;
+			const Signal = signals.Signal;
+			const RAD2DEG = 57.29577951308232;
+			const DEG2RAD = 0.017453292519943295;
+			document.body.appendChild( createSidePanel() );
+		</script>
+
+		<script src="/marathon/js/three.js"></script>
+		<script src="/marathon/js/MeshWalk.js"></script>
+		<script src="/marathon/js/UVsDebug.js"></script>
+		<script src="/marathon/js/FBXLoader.js"></script>
+		<script src="/marathon/js/VirtualInput.js"></script>
+		<script src="/marathon/js/KeyboardState.js"></script>
+		<script src="/marathon/js/EditorControls.js"></script>
+		<script src="/marathon/js/camera-controls.js"></script>
+		<script src="/marathon/js/SubdivisionModifier.js"></script>
+		<script src="/marathon/js/three-pathfinding.umd.js"></script>
+
+		<script src="/threejs/r96/examples/js/loaders/MTLLoader.js"></script>
+		<script src="/threejs/r96/examples/js/loaders/OBJLoader.js"></script>
+		<script src="/threejs/r96/examples/js/loaders/GLTFLoader.js"></script>
+		<script src="/threejs/r96/examples/js/loaders/TGALoader.js"></script>
+		<script src="/threejs/r96/examples/js/loaders/DDSLoader.js"></script>
+
+		<script>
+
+		//	THREE.Loader.Handlers.add( /.tga/, new THREE.TGALoader() );
+		//	THREE.Loader.Handlers.add( /.dds/, new THREE.DDSLoader() );
+
+		</script>
+
+		<script src="/threejs/r96/examples/js/exporters/GLTFExporter.js"></script>
+		<script src="/threejs/r96/examples/js/exporters/STLExporter.js"></script>
+		<script src="/threejs/r96/examples/js/exporters/OBJExporter.js"></script>
+		<script src="/threejs/r96/examples/js/exporters/ColladaExporter.js"></script>
+
+	<!-- Water.js -->
+
+		<script src="/marathon/js/Ocean_fft.js"></script>
+		<script src="/marathon/js/MirrorRenderer.js"></script>
+		<script src="/marathon/js/WaterMaterial.js"></script>
+
+	<!-- Engine.js -->
+
+		<script src="/marathon/core/helpers.js"></script>
+		<script src="/marathon/core/keyboard.js"></script>
+		<script src="/marathon/core/enviroment.js"></script>
+		<script src="/marathon/core/localPlayer.js"></script>
+		<script src="/marathon/core/cameraControls.js"></script>
+		<script src="/marathon/core/keyboardState.js"></script>
+		<script src="/marathon/core/keyInputControls.js"></script>
+		<script src="/marathon/core/joystickControls.js"></script>
+
+		<script>
+
+		//	player-controller-tab-ui.js
+
+			TabUI.add( "Controller", "controller-tab" ); TabUI.append("Controller");
+
+			const player_droplist = (function( tab ){
+
+			//	Players droplist. When option is selected, switches to EditMode.
+				var row = document.createElement("h3"); row.textContent = "Player:"; row.style.cssText = "height:40px;"
+				var select = document.createElement("select"); select.id = "player-controller-droplist";
+				select.style.cssText  = "width:170px;color:#000;float:right;border:1px solid;border-radius:4px;";
+				select.style.cssText += "padding:2px 4px 4px 4px;font-size:20px;margin-left:10px;margin-right:15px;";
+
+				(function(){
+					var option = document.createElement("option");
+					option.text = "local player"; option.value = ""; 
+					select.appendChild( option );
+				})();
+
+				row.appendChild( select ); tab.appendChild( row );
+
+				return select;
+
+			})( TabUI.Controller.tab );
+
+			(function( tab ){
+
+			//	isGrounded input.
+				var row = document.createElement("h3"); row.textContent = "grounded:"; row.style.cssText = "margin:10px 15px 10px 0;height:30px;";
+				var vect = document.createElement("div"); vect.style.cssText = "width:170px;height:40px;float:right;";
+				var prev = document.createElement("li"); prev.id = "grounded-decrease"; prev.innerHTML = "&#9668;"; 
+				prev.style.display = "inline"; prev.classList.add("btn","btn-primary","get-prev-btn","pull-left");
+				var next = document.createElement("li"); next.id = "grounded-increase"; next.innerHTML = "&#9658;";
+				next.style.display = "inline"; next.classList.add("btn","btn-primary","get-next-btn","pull-right");
+				var input = document.createElement("input"); input.id = "grounded-input";
+				input.setAttribute("placeholder", "value" ); input.classList.add("form-control","text-center");
+				input.style.cssText  = "color:#000;border:none;display:inline;width:80px;margin:0px 5px;"
+				input.style.cssText += "text-align:center;font-size:large;font-weigth:bold;background:none;";
+				vect.appendChild(prev); vect.appendChild(input); vect.appendChild(next); row.appendChild(vect); tab.appendChild( row );
+
+			})( TabUI.Controller.tab );
+
+			(function( tab ){
+
+			//	isIdling input.
+				var row = document.createElement("h3"); row.textContent = "idling:"; row.style.cssText = "margin:10px 15px 10px 0;height:30px;";
+				var vect = document.createElement("div"); vect.style.cssText = "width:170px;height:40px;float:right;";
+				var prev = document.createElement("li"); prev.id = "idling-decrease"; prev.innerHTML = "&#9668;"; 
+				prev.style.display = "inline"; prev.classList.add("btn","btn-primary","get-prev-btn","pull-left");
+				var next = document.createElement("li"); next.id = "idling-increase"; next.innerHTML = "&#9658;";
+				next.style.display = "inline"; next.classList.add("btn","btn-primary","get-next-btn","pull-right");
+				var input = document.createElement("input"); input.id = "idling-input";
+				input.setAttribute("placeholder", "value" ); input.classList.add("form-control","text-center");
+				input.style.cssText  = "color:#000;border:none;display:inline;width:80px;margin:0px 5px;"
+				input.style.cssText += "text-align:center;font-size:large;font-weigth:bold;background:none;";
+				vect.appendChild(prev); vect.appendChild(input); vect.appendChild(next); row.appendChild(vect); tab.appendChild( row );
+
+			})( TabUI.Controller.tab );
+
+			(function( tab ){
+
+			//	isJumping input.
+				var row = document.createElement("h3"); row.textContent = "jumping:"; row.style.cssText = "margin:10px 15px 10px 0;height:30px;";
+				var vect = document.createElement("div"); vect.style.cssText = "width:170px;height:40px;float:right;";
+				var prev = document.createElement("li"); prev.id = "jumping-decrease"; prev.innerHTML = "&#9668;"; 
+				prev.style.display = "inline"; prev.classList.add("btn","btn-primary","get-prev-btn","pull-left");
+				var next = document.createElement("li"); next.id = "jumping-increase"; next.innerHTML = "&#9658;";
+				next.style.display = "inline"; next.classList.add("btn","btn-primary","get-next-btn","pull-right");
+				var input = document.createElement("input"); input.id = "jumping-input";
+				input.setAttribute("placeholder", "value" ); input.classList.add("form-control","text-center");
+				input.style.cssText  = "color:#000;border:none;display:inline;width:80px;margin:0px 5px;"
+				input.style.cssText += "text-align:center;font-size:large;font-weigth:bold;background:none;";
+				vect.appendChild(prev); vect.appendChild(input); vect.appendChild(next); row.appendChild(vect); tab.appendChild( row );
+
+			})( TabUI.Controller.tab );
+
+			(function( tab ){
+
+			//	isOnSlope input.
+				var row = document.createElement("h3"); row.textContent = "on slope:"; row.style.cssText = "margin:10px 15px 10px 0;height:30px;";
+				var vect = document.createElement("div"); vect.style.cssText = "width:170px;height:40px;float:right;";
+				var prev = document.createElement("li"); prev.id = "slope-decrease"; prev.innerHTML = "&#9668;"; 
+				prev.style.display = "inline"; prev.classList.add("btn","btn-primary","get-prev-btn","pull-left");
+				var next = document.createElement("li"); next.id = "slope-increase"; next.innerHTML = "&#9658;";
+				next.style.display = "inline"; next.classList.add("btn","btn-primary","get-next-btn","pull-right");
+				var input = document.createElement("input"); input.id = "slope-input";
+				input.setAttribute("placeholder", "value" ); input.classList.add("form-control","text-center");
+				input.style.cssText  = "color:#000;border:none;display:inline;width:80px;margin:0px 5px;"
+				input.style.cssText += "text-align:center;font-size:large;font-weigth:bold;background:none;";
+				vect.appendChild(prev); vect.appendChild(input); vect.appendChild(next); row.appendChild(vect); tab.appendChild( row );
+
+			})( TabUI.Controller.tab );
+
+			(function( tab ){
+
+			//	isRunning input.
+				var row = document.createElement("h3"); row.textContent = "running:"; row.style.cssText = "margin:10px 15px 10px 0;height:30px;";
+				var vect = document.createElement("div"); vect.style.cssText = "width:170px;height:40px;float:right;";
+				var prev = document.createElement("li"); prev.id = "running-decrease"; prev.innerHTML = "&#9668;"; 
+				prev.style.display = "inline"; prev.classList.add("btn","btn-primary","get-prev-btn","pull-left");
+				var next = document.createElement("li"); next.id = "running-increase"; next.innerHTML = "&#9658;";
+				next.style.display = "inline"; next.classList.add("btn","btn-primary","get-next-btn","pull-right");
+				var input = document.createElement("input"); input.id = "running-input";
+				input.setAttribute("placeholder", "value" ); input.classList.add("form-control","text-center");
+				input.style.cssText  = "color:#000;border:none;display:inline;width:80px;margin:0px 5px;"
+				input.style.cssText += "text-align:center;font-size:large;font-weigth:bold;background:none;";
+				vect.appendChild(prev); vect.appendChild(input); vect.appendChild(next); row.appendChild(vect); tab.appendChild( row );
+
+			})( TabUI.Controller.tab );
+
+			(function( tab ){
+
+			//	maxSlopeGradient input.
+				var row = document.createElement("h3"); row.textContent = "maxslop:"; row.style.cssText = "margin:10px 15px 10px 0;height:30px;";
+				var vect = document.createElement("div"); vect.style.cssText = "width:170px;height:40px;float:right;";
+				var prev = document.createElement("li"); prev.id = "max-slope-decrease"; prev.innerHTML = "&#9668;"; 
+				prev.style.display = "inline"; prev.classList.add("btn","btn-primary","get-prev-btn","pull-left");
+				var next = document.createElement("li"); next.id = "max-slope-increase"; next.innerHTML = "&#9658;";
+				next.style.display = "inline"; next.classList.add("btn","btn-primary","get-next-btn","pull-right");
+				var input = document.createElement("input"); input.id = "max-slope-input";
+				input.setAttribute("placeholder", "value" ); input.classList.add("form-control","text-center");
+				input.style.cssText  = "color:#000;border:none;display:inline;width:80px;margin:0px 5px;"
+				input.style.cssText += "text-align:center;font-size:large;font-weigth:bold;background:none;";
+				vect.appendChild(prev); vect.appendChild(input); vect.appendChild(next); row.appendChild(vect); tab.appendChild( row );
+
+			})( TabUI.Controller.tab );
+
+			(function( tab ){
+
+			//	movementSpeed input.
+				var row = document.createElement("h3"); row.textContent = "speed:"; row.style.cssText = "margin:10px 15px 10px 0;height:30px;";
+				var vect = document.createElement("div"); vect.style.cssText = "width:170px;height:40px;float:right;";
+				var prev = document.createElement("li"); prev.id = "speed-decrease"; prev.innerHTML = "&#9668;"; 
+				prev.style.display = "inline"; prev.classList.add("btn","btn-primary","get-prev-btn","pull-left");
+				var next = document.createElement("li"); next.id = "speed-increase"; next.innerHTML = "&#9658;";
+				next.style.display = "inline"; next.classList.add("btn","btn-primary","get-next-btn","pull-right");
+				var input = document.createElement("input"); input.id = "speed-input";
+				input.setAttribute("placeholder", "value" ); input.classList.add("form-control","text-center");
+				input.style.cssText  = "color:#000;border:none;display:inline;width:80px;margin:0px 5px;"
+				input.style.cssText += "text-align:center;font-size:large;font-weigth:bold;background:none;";
+				vect.appendChild(prev); vect.appendChild(input); vect.appendChild(next); row.appendChild(vect); tab.appendChild( row );
+
+			})( TabUI.Controller.tab );
+
+			(function( tab ){
+
+			//	direction input.
+				var row = document.createElement("h3"); row.textContent = "direction:"; row.style.cssText = "margin:10px 15px 10px 0;height:30px;";
+				var vect = document.createElement("div"); vect.style.cssText = "width:170px;height:40px;float:right;";
+				var prev = document.createElement("li"); prev.id = "direction-decrease"; prev.innerHTML = "&#9668;"; 
+				prev.style.display = "inline"; prev.classList.add("btn","btn-primary","get-prev-btn","pull-left");
+				var next = document.createElement("li"); next.id = "direction-increase"; next.innerHTML = "&#9658;";
+				next.style.display = "inline"; next.classList.add("btn","btn-primary","get-next-btn","pull-right");
+				var input = document.createElement("input"); input.id = "direction-input";
+				input.setAttribute("placeholder", "value" ); input.classList.add("form-control","text-center");
+				input.style.cssText  = "color:#000;border:none;display:inline;width:80px;margin:0px 5px;"
+				input.style.cssText += "text-align:center;font-size:large;font-weigth:bold;background:none;";
+				vect.appendChild(prev); vect.appendChild(input); vect.appendChild(next); row.appendChild(vect); tab.appendChild( row );
+
+			})( TabUI.Controller.tab );
+
+		</script>
+
+		<script>
+
+			TabUI.add( "Terrain", "terrain-tab" ); TabUI.append("Terrain");
+
+			(function( tab ){
+
+			//	Image viewer.
+
+				const dummy_src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+
+				var row = document.createElement("h3");
+				row.style.cssText = "height:260px;border:none;text-align:center;"; // margin-right:15px;
+
+				var img = new Image(256,256); img.src = dummy_src; img.id = "terrain-image-viewer";
+				img.style.cssText = "width:256px;height:256px;margin:auto;background-repeat:repeat;";
+				img.style.cssText += "background-image:url('https://i.imgur.com/rnZZU0i.png') !important;";
+
+				var k,terrain;
+
+				watch( img, "onerror", function(prop, event, value){ img.src = value; });
+				watch( img, "onload", function(prop, event, value){ 
+				//	debugMode && console.log({item:img,event:event,value:img.src});
+
+				//	Matrix.
+					var minHeight = 0; var maxHeight = 5;
+					var matrix = img2matrix( img, img.width, img.height, minHeight, maxHeight );
+
+				//  Geometry.
+					var geometry = matrix2geometry( matrix, img.width-1, img.height-1 );
+					geometry.mergeVertices(); // important!
+					geometry.rotateX(-Math.PI/2); 
+					geometry.computeBoundingBox();
+					geometry.center(); // important!
+					console.log("geometry:", geometry);
+
+					var material = new THREE.MeshLambertMaterial({
+						visible:true, wireframe:false, 
+					});
+
+				//  Terrain.
+					terrain = new THREE.Mesh(geometry, material);
+					++k; terrain.name = "terrain "+k; // important!
+					terrain.position.set(0,0,0);
+					var s = 5; terrain.scale.set(s,s,s);
+					terrain.geometry.applyMatrix( terrain.matrix ); // important!
+					console.log("terrain:", terrain);
+
+				//	Add to world (meshwalk.js works with THREE.Geometry only).
+					scene.add( terrain ); // optional: cameraControls need it.
+					octree.importThreeMesh( terrain );
+				//	octree.removeThreeMesh( groundMeshID );
+				//	cameraControls.rigidObjects.push( terrain );
+
+				//	localPlayer.
+					localPlayer.controller.center.set(0, 50, 0);
+					localPlayer.controller.isIdling = false; // important!
+
+				//	Convert terrain to GLTF (level).
+
+					function img2matrix( image, width, depth, minHeight, maxHeight ) {
+
+						width = width|0;
+						depth = depth|0;
+
+						var i, j;
+						var matrix = [];
+						var canvas = document.createElement( "canvas" ),
+							ctx = canvas.getContext( "2d" );
+						var imgData, pixel, channels = 4;
+						var heightRange = maxHeight - minHeight;
+						var heightData;
+
+						canvas.width  = width;
+						canvas.height = depth;
+
+						ctx.drawImage( image, 0, 0, width, depth );
+						imgData = ctx.getImageData( 0, 0, width, depth ).data;
+
+						for ( i = 0|0; i < depth; i = ( i + 1 )|0 ) { //row
+
+							matrix.push( [] );
+
+							for ( j = 0|0; j < width; j = ( j + 1 )|0 ) { //col
+
+								pixel = i * depth + j;
+								heightData = imgData[ pixel * channels ] / 255 * heightRange + minHeight;
+
+								matrix[ i ].push( heightData );
+
+							}
+
+						}
+
+						return matrix;
+					}
+
+					function matrix2geometry ( matrix, width, depth ) {
+
+						var sizeX = matrix[ 0 ].length;
+						var sizeZ = matrix.length;
+
+						var halfWidth = width * 0.5;
+						var halfDepth = depth * 0.5;
+						var geometry = new THREE.PlaneGeometry( width, depth, sizeX - 1, sizeZ - 1 );
+
+						var z90deg = new THREE.Matrix4().makeRotationZ( -Math.PI/2 );
+						geometry.applyMatrix( z90deg );
+
+						geometry.vertices.forEach( function ( vertex, i ) {
+
+							var row = ( i / sizeX )|0;
+							var col = i % sizeX;
+
+							vertex.x = halfWidth + vertex.x;
+							vertex.y = halfDepth + vertex.y;
+							vertex.z = matrix[ row ][ col ];
+
+						});
+
+						geometry.computeFaceNormals();
+						geometry.computeVertexNormals();
+
+						return geometry;
+					}
+
+				});
+
+
+				img.addEventListener("load",function(event){ callWatchers( this, "onload", "load", this.src ); })
+				img.addEventListener("error",function(err){ callWatchers( this, "onerror", "error", dummy_src ); })
+
+				row.appendChild( img ); tab.appendChild( row );
+
+				var row = document.createElement("h3"); row.style.cssText = "height:30px;margin-bottom:20px;"
+				var button = document.createElement("div"); button.id = "terrain-import-image"; button.textContent = "Import Terrain Image";
+				button.classList.add( "form-control", "btn", "btn-primary", "btn-white-outline", "gradient-btn" );
+				button.style.cssText = "width:-webkit-fill-available;float:right;height:40px;font-size:large;margin-right:15px;";
+
+				var input = document.createElement("input"); input.type = "file"; input.id = "terrain-file-input";
+				input.style.cssText = "display:none;"; button.appendChild( input );
+				row.appendChild( button ); tab.appendChild( row );
+
+				input.addEventListener( "change", function(){
+
+					if ( !input.files.length ) return;
+
+					var file = input.files[0];
+
+					var reader = new FileReader();
+					reader.addEventListener("load", function() {
+						img.name = file.name;
+						img.src = reader.result;
+					});
+
+					reader.readAsDataURL(file);
+
+				});
+
+				button.addEventListener("click", function(){
+					input.value = ""; input.click(); 
+					removeTerrain(); return false;
+				});
+
+				function removeTerrain(){
+
+					if (terrain) {
+						scene.remove(terrain);
+						terrain.geometry.dispose();
+						terrain.material.dispose();
+						removeRigidObject( terrain );
+						octree.removeThreeMesh(terrain.geometry.uuid);
+					}
+
+					function removeRigidObject( mesh ){
+						var rigidObjects = cameraControls.rigidObjects;
+						var index = rigidObjects.findIndex( function( item ){
+							return item.uuid === mesh.uuid;
+						}); if ( index < 0 ) return; // important!
+						cameraControls.rigidObjects.splice( index, 1 );
+					}
+
+				}
+
+			})( TabUI.Terrain.tab );
+
+		</script>
+<!--
+		<script>
+
+			(function( url ){
+
+				var loader = new THREE.FBXLoader();
+				loader.load( url, function( group ){
+
+				//	cpu player.
+
+					var player = (function(){
+						var player = new THREE.Object3D();
+						player.position.set( 0,0,0 );
+						player.name = "cpu player";
+						scene.add( player );
+						return player;
+					})();
+
+				//	player controller.
+
+					var radius = 1;
+
+					player.controller = (function( object, radius ){
+						var controller = new MW.CharacterController( object, radius );
+						controller.center.x =  0.5;
+						controller.center.z = -130;
+						controller.isRunning = true;
+						controller.movementSpeed = 5;
+						controller.direction = Math.PI;
+						controller.maxSlopeGradient = 0.5;
+						world.add( controller );
+						return controller;
+					})( player, radius );
+
+					var s = 0.009; 
+					group.scale.set( s,s,s );
+					group.position.y = -radius; 
+					player.add( group ); 
+
+					player.animationController = new MW.AnimationController( group );
+					player.animationController.play("mixamo.com");
+
+					var clock = new THREE.Clock();
+					(function update(){
+						requestAnimationFrame( update );
+						var delta = clock.getDelta();
+						player.animationController.update( delta );
+						if ( player.controller.center.y < -1 ) player.controller.center.set(0.5, 1, -130);
+					})();
+
+				});
+
+			})("/marathon/characters/peasantgirl/SlowRun.fbx");
+
+		</script>
+
+		<script>
+
+			(function( url ){
+
+				var loader = new THREE.FBXLoader();
+				loader.load( url, function( group ){
+
+				//	cpu player.
+
+					var player = (function(){
+						var player = new THREE.Object3D();
+						player.position.set( 0,0,0 );
+						player.name = "cpu player";
+						scene.add( player );
+						return player;
+					})();
+
+				//	player controller.
+
+					var radius = 1;
+
+					player.controller = (function( object, radius ){
+						var controller = new MW.CharacterController( object, radius );
+						controller.center.x = -0.5;
+						controller.center.z = -130;
+						controller.isRunning = true;
+						controller.movementSpeed = 5;
+						controller.direction = Math.PI;
+						controller.maxSlopeGradient = 0.5;
+						world.add( controller );
+						return controller;
+					})( player, radius );
+
+					var s = 0.01; 
+					group.scale.set( s,s,s );
+					group.position.y = -radius; 
+					player.add( group ); 
+
+					player.animationController = new MW.AnimationController( group );
+					player.animationController.play("mixamo.com");
+
+					var clock = new THREE.Clock();
+					(function update(){
+						requestAnimationFrame( update );
+						var delta = clock.getDelta();
+						player.animationController.update( delta );
+						if ( player.controller.center.y < -1 ) player.controller.center.set(-0.5, 1, -130);
+					})();
+
+				});
+
+			})("/marathon/characters/arissa/SlowRun.fbx");
+
+		</script>
+
+		<script>
+
+			(function( url ){
+
+				var loader = new THREE.FBXLoader();
+				loader.load( url, function( group ){
+
+				//	cpu player.
+
+					var player = (function(){
+						var player = new THREE.Object3D();
+						player.position.set( 0,0,0 );
+						player.name = "cpu player";
+						scene.add( player );
+						return player;
+					})();
+
+				//	player controller.
+
+					var radius = 1;
+
+					player.controller = (function( object, radius ){
+						var controller = new MW.CharacterController( object, radius );
+						controller.center.x = -1.5;
+						controller.center.z = -130;
+						controller.isRunning = true;
+						controller.movementSpeed = 5;
+						controller.direction = Math.PI;
+						controller.maxSlopeGradient = 0.5;
+						world.add( controller );
+						return controller;
+					})( player, radius );
+
+					var s = 0.024; 
+					group.scale.set( s,s,s );
+					group.position.y = -1.1; 
+					player.add( group ); 
+
+					player.animationController = new MW.AnimationController( group );
+					player.animationController.play("mixamo.com");
+
+					var clock = new THREE.Clock();
+					(function update(){
+						requestAnimationFrame( update );
+						var delta = clock.getDelta();
+						player.animationController.update( delta );
+						if ( player.controller.center.y < -1 ) player.controller.center.set(-1.5, 1, -130);
+					})();
+
+				});
+
+			})("/marathon/characters/asiangirl/SlowRun.fbx");
+
+		</script>
+
+		<script>
+
+			(function( url ){
+
+				var loader = new THREE.FBXLoader();
+				loader.load( url, function( group ){
+
+				//	cpu player.
+
+					var player = (function(){
+						var player = new THREE.Object3D();
+						player.position.set( 0,0,0 );
+						player.name = "cpu player";
+						scene.add( player );
+						return player;
+					})();
+
+				//	player controller.
+
+					var radius = 1;
+
+					player.controller = (function( object, radius ){
+						var controller = new MW.CharacterController( object, radius );
+						controller.center.x = -1.5;
+						controller.center.z = -130;
+						controller.isRunning = true;
+						controller.movementSpeed = 5;
+						controller.direction = Math.PI;
+						controller.maxSlopeGradient = 0.5;
+						world.add( controller );
+						return controller;
+					})( player, radius );
+
+					var s = 0.024; 
+					group.scale.set( s,s,s );
+					group.position.y = -1.1; 
+					player.add( group ); 
+
+					player.animationController = new MW.AnimationController( group );
+					player.animationController.play("mixamo.com");
+
+					var clock = new THREE.Clock();
+					(function update(){
+						requestAnimationFrame( update );
+						var delta = clock.getDelta();
+						player.animationController.update( delta );
+						if ( player.controller.center.y < -1 ) player.controller.center.set(-1.5, 1, -130);
+					})();
+
+				});
+
+			})("/marathon/characters/funkygirl/SlowRun.fbx");
+
+		</script>
+
+		<script>
+
+			(function( url ){
+
+				var loader = new THREE.FBXLoader();
+				loader.load( url, function( group ){
+
+				//	cpu player.
+
+					var player = (function(){
+						var player = new THREE.Object3D();
+						player.position.set( 0,0,0 );
+						player.name = "cpu player";
+						scene.add( player );
+						return player;
+					})();
+
+				//	player controller.
+
+					var radius = 1;
+
+					player.controller = (function( object, radius ){
+						var controller = new MW.CharacterController( object, radius );
+						controller.center.x = -1.5;
+						controller.center.z = -130;
+						controller.isRunning = true;
+						controller.movementSpeed = 5;
+						controller.direction = Math.PI;
+						controller.maxSlopeGradient = 0.5;
+						world.add( controller );
+						return controller;
+					})( player, radius );
+
+					var s = 0.024; 
+					group.scale.set( s,s,s );
+					group.position.y = -1.1; 
+					player.add( group ); 
+
+					player.animationController = new MW.AnimationController( group );
+					player.animationController.play("mixamo.com");
+
+					var clock = new THREE.Clock();
+					(function update(){
+						requestAnimationFrame( update );
+						var delta = clock.getDelta();
+						player.animationController.update( delta );
+						if ( player.controller.center.y < -1 ) player.controller.center.set(-1.5, 1, -130);
+					})();
+
+				});
+
+			})("/marathon/characters/schoolgirl/SlowRun.fbx");
+
+		</script>
+-->
+		<script>
+
+			(function( url ){
+
+				var loader = new THREE.FBXLoader();
+				loader.load( url, function( group ){
+
+				//	object is THREE.Group.
+					group.name = "Paim";
+				//	var s = 1; group.scale.set(s,s,s); // important!
+					group.position.y = -localPlayer.controller.radius;
+					debugMode && console.log( group ); 
+
+				//	Add group to scene before animation controller.
+					localPlayer.add( group ); 
+					localPlayer.controller.center.x = 0;
+					localPlayer.controller.center.z = -130;
+					localPlayer.controller.isRunning = true;
+					localPlayer.controller.direction += Math.PI; // important!
+					localPlayer.controller.movementSpeed = 5.01; // debug!
+					localPlayer.getObjectByName("local helper").visible = false;
+
+					localPlayer.animationController = new MW.AnimationController( group );
+					debugMode && console.log( "animationController:", localPlayer.animationController );
+					localPlayer.animationController.play("mixamo.com"); // important!
+
+					var clock = new THREE.Clock();
+					(function update(){
+						requestAnimationFrame( update );
+						var delta = clock.getDelta();
+						localPlayer.animationController.update( delta );
+					})();
+
+				});
+
+			})("/characters/scarletblade/paim/SlowRun.fbx");
+
+		</script>
+
+		<script>
+
+			TabUI.Terrain.role.classList.add("active");
+			TabUI.Terrain.tab.classList.add("in","active");
+			TabUI.Terrain.pill.scrollIntoViewIfNeeded(false);
+
+		</script>
+
+	</body>
+</html>
