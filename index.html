@@ -323,75 +323,47 @@
 				img.style.cssText = "width:256px;height:256px;margin:auto;background-repeat:repeat;";
 				img.style.cssText += "background-image:url('https://i.imgur.com/rnZZU0i.png') !important;";
 
-				watch( img, "onload", function(prop, event, value){ ; }); // debugMode && console.log({item:img,event:event,value:img.src});
+				var k,terrain;
+
 				watch( img, "onerror", function(prop, event, value){ img.src = value; });
+				watch( img, "onload", function(prop, event, value){ 
+				//	debugMode && console.log({item:img,event:event,value:img.src});
 
-				img.addEventListener("load",function(event){ callWatchers( this, "onload", "load", this.src ); })
-				img.addEventListener("error",function(err){ callWatchers( this, "onerror", "error", dummy_src ); })
+				//	Matrix.
+					var minHeight = 0; var maxHeight = 5;
+					var matrix = img2matrix( img, img.width, img.height, minHeight, maxHeight );
 
-				row.appendChild( img ); tab.appendChild( row );
+				//  Geometry.
+					var geometry = matrix2geometry( matrix, img.width-1, img.height-1 );
+					geometry.mergeVertices(); // important!
+					geometry.rotateX(-Math.PI/2); 
+					geometry.computeBoundingBox();
+					geometry.center(); // important!
+					console.log("geometry:", geometry);
 
-			})( TabUI.Terrain.tab );
-
-			(function( tab ){
-
-				var row = document.createElement("h3"); row.style.cssText = "height:30px;margin-bottom:20px;"
-				var button = document.createElement("div"); button.id = "terrain-import-image"; button.textContent = "Import Terrain Image";
-				button.classList.add( "form-control", "btn", "btn-primary", "btn-white-outline", "gradient-btn" );
-				button.style.cssText = "width:-webkit-fill-available;float:right;height:40px;font-size:large;margin-right:15px;";
-
-				var input = document.createElement("input"); input.type = "file"; input.id = "terrain-file-input";
-				input.style.cssText = "display:none;"; button.appendChild( input );
-				row.appendChild( button ); tab.appendChild( row );
-
-				var terrain;
-
-				input.addEventListener( "change", function(){
-
-					if ( !input.files.length ) return;
-
-					var file = input.files[0];
-
-					var img = new Image(300,300);
-					img.addEventListener("load", function(){
-
-					//	Matrix.
-						var minHeight = 0; var maxHeight = 10;
-						var matrix = img2matrix( img, img.width, img.height, minHeight, maxHeight );
-
-					//  Geometry.
-						var geometry = matrix2geometry( matrix,  img.width-1 , img.height-1 );
-						geometry.mergeVertices(); // important!
-						geometry.rotateX(-Math.PI/2); 
-						geometry.computeBoundingBox();
-						geometry.center(); // important!
-						console.log("geometry:", geometry);
-
-						var material = new THREE.MeshLambertMaterial({
-							visible:true, wireframe:false, 
-						});
-
-					//  Terrain.
-						terrain = new THREE.Mesh(geometry, material);
-						terrain.name = "terrain "+file.name; // important!
-						terrain.position.set(0, 0, 0);
-						var s = 10; terrain.scale.set(s, s, s);
-						terrain.geometry.applyMatrix( terrain.matrix ); // important!
-						console.log("terrain:", terrain);
-
-					//	Add to world (meshwalk.js works with THREE.Geometry only).
-						scene.add( terrain ); // optional: cameraControls need it.
-						octree.importThreeMesh( terrain );
-					//	octree.removeThreeMesh( groundMeshID );
-					//	cameraControls.rigidObjects.push( terrain );
-
-					//	localPlayer.
-						localPlayer.controller.center.set(0, 50, 0);
-						localPlayer.controller.isIdling = false; // important!
-
-					//	Convert terrain to GLTF (level).
-
+					var material = new THREE.MeshLambertMaterial({
+						visible:true, wireframe:false, 
 					});
+
+				//  Terrain.
+					terrain = new THREE.Mesh(geometry, material);
+					++k; terrain.name = "terrain "+k; // important!
+					terrain.position.set(0,0,0);
+					var s = 5; terrain.scale.set(s,s,s);
+					terrain.geometry.applyMatrix( terrain.matrix ); // important!
+					console.log("terrain:", terrain);
+
+				//	Add to world (meshwalk.js works with THREE.Geometry only).
+					scene.add( terrain ); // optional: cameraControls need it.
+					octree.importThreeMesh( terrain );
+				//	octree.removeThreeMesh( groundMeshID );
+				//	cameraControls.rigidObjects.push( terrain );
+
+				//	localPlayer.
+					localPlayer.controller.center.set(0, 50, 0);
+					localPlayer.controller.isIdling = false; // important!
+
+				//	Convert terrain to GLTF (level).
 
 					function img2matrix( image, width, depth, minHeight, maxHeight ) {
 
@@ -458,6 +430,29 @@
 
 						return geometry;
 					}
+
+				});
+
+
+				img.addEventListener("load",function(event){ callWatchers( this, "onload", "load", this.src ); })
+				img.addEventListener("error",function(err){ callWatchers( this, "onerror", "error", dummy_src ); })
+
+				row.appendChild( img ); tab.appendChild( row );
+
+				var row = document.createElement("h3"); row.style.cssText = "height:30px;margin-bottom:20px;"
+				var button = document.createElement("div"); button.id = "terrain-import-image"; button.textContent = "Import Terrain Image";
+				button.classList.add( "form-control", "btn", "btn-primary", "btn-white-outline", "gradient-btn" );
+				button.style.cssText = "width:-webkit-fill-available;float:right;height:40px;font-size:large;margin-right:15px;";
+
+				var input = document.createElement("input"); input.type = "file"; input.id = "terrain-file-input";
+				input.style.cssText = "display:none;"; button.appendChild( input );
+				row.appendChild( button ); tab.appendChild( row );
+
+				input.addEventListener( "change", function(){
+
+					if ( !input.files.length ) return;
+
+					var file = input.files[0];
 
 					var reader = new FileReader();
 					reader.addEventListener("load", function() {
