@@ -356,7 +356,7 @@
 					img.addEventListener("load", function(){
 
 					//	Matrix.
-						var minHeight = 0; var maxHeight = 10;
+						var minHeight = 0; var maxHeight = 1;
 						var matrix = img2matrix( img, img.width, img.height, minHeight, maxHeight );
 
 					//  Geometry.
@@ -364,8 +364,12 @@
 						geometry.mergeVertices(); // important!
 						geometry.rotateX(-Math.PI/2); 
 						geometry.computeBoundingBox();
-						geometry.center();
+						geometry.center(); // important!
 						console.log("geometry:", geometry);
+
+						var material = new THREE.MeshBasicMaterial({
+							visible:true, wireframe:true, 
+						});
 
 					//  Terrain.
 						terrain = new THREE.Mesh(geometry, material);
