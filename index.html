@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 
-		<title>marathon (pre-alpha v0.0.2)</title>
+		<title>marathon (pre-alpha v0.0.3)</title>
 
 		<meta charset="utf-8">
 		<meta name="generator" content="Three.js Editor">
@@ -141,7 +141,6 @@
 		<script src="/marathon/core/keyboardState.js"></script>
 		<script src="/marathon/core/keyInputControls.js"></script>
 		<script src="/marathon/core/joystickControls.js"></script>
-
 
 		<script>
 
@@ -307,6 +306,26 @@
 
 		</script>
 
+		<script>
+
+			(function( url ){
+
+				var loader = new THREE.FBXLoader();
+				loader.load( url, function( group ){
+
+				//	object is THREE.Group.
+					group.name = "CartoonCityBlock";
+					debugMode && console.log( group ); 
+					scene.add( group );
+					cartoonCityBlock = group;
+
+				});
+
+			})("/models/city/Lowpoly_City_Free_Pack.fbx");
+
+
+		</script>
+<!--
 		<script>
 
 			(function( url ){
@@ -620,7 +639,7 @@
 			})("/marathon/characters/schoolgirl/SlowRun.fbx");
 
 		</script>
-
+-->
 		<script>
 
 			TabUI.Controller.role.classList.add("active");
