@@ -375,7 +375,7 @@
 						terrain = new THREE.Mesh(geometry, material);
 						terrain.name = "terrain "+file.name; // important!
 						terrain.position.set(0, 0, 0);
-						var s = 1; terrain.scale.set(s, s, s);
+						var s = 10; terrain.scale.set(s, s, s);
 						terrain.geometry.applyMatrix( terrain.matrix ); // important!
 						console.log("terrain:", terrain);
 
