@@ -493,46 +493,7 @@
 			})( TabUI.Terrain.tab );
 
 		</script>
-
-		<script>
-
-			(function( url ){
-
-				var loader = new THREE.FBXLoader();
-				loader.load( url, function( group ){
-
-				//	object is THREE.Group.
-					group.name = "Paim";
-				//	var s = 1; group.scale.set(s,s,s); // important!
-					group.position.y = -localPlayer.controller.radius;
-					debugMode && console.log( group ); 
-
-				//	Add group to scene before animation controller.
-					localPlayer.add( group ); 
-					localPlayer.controller.center.x = 0;
-					localPlayer.controller.center.z = -130;
-					localPlayer.controller.isRunning = true;
-					localPlayer.controller.direction += Math.PI; // important!
-					localPlayer.controller.movementSpeed = 5.01; // debug!
-					localPlayer.getObjectByName("local helper").visible = false;
-
-					localPlayer.animationController = new MW.AnimationController( group );
-					debugMode && console.log( "animationController:", localPlayer.animationController );
-					localPlayer.animationController.play("mixamo.com"); // important!
-
-					var clock = new THREE.Clock();
-					(function update(){
-						requestAnimationFrame( update );
-						var delta = clock.getDelta();
-						localPlayer.animationController.update( delta );
-					})();
-
-				});
-
-			})("/characters/scarletblade/paim/SlowRun.fbx");
-
-		</script>
-
+<!--
 		<script>
 
 			(function( url ){
@@ -810,9 +771,48 @@
 
 		<script>
 
-			TabUI.Controller.role.classList.add("active");
-			TabUI.Controller.tab.classList.add("in","active");
-			TabUI.Controller.pill.scrollIntoViewIfNeeded(false);
+			(function( url ){
+
+				var loader = new THREE.FBXLoader();
+				loader.load( url, function( group ){
+
+				//	object is THREE.Group.
+					group.name = "Paim";
+				//	var s = 1; group.scale.set(s,s,s); // important!
+					group.position.y = -localPlayer.controller.radius;
+					debugMode && console.log( group ); 
+
+				//	Add group to scene before animation controller.
+					localPlayer.add( group ); 
+					localPlayer.controller.center.x = 0;
+					localPlayer.controller.center.z = -130;
+					localPlayer.controller.isRunning = true;
+					localPlayer.controller.direction += Math.PI; // important!
+					localPlayer.controller.movementSpeed = 5.01; // debug!
+					localPlayer.getObjectByName("local helper").visible = false;
+
+					localPlayer.animationController = new MW.AnimationController( group );
+					debugMode && console.log( "animationController:", localPlayer.animationController );
+					localPlayer.animationController.play("mixamo.com"); // important!
+
+					var clock = new THREE.Clock();
+					(function update(){
+						requestAnimationFrame( update );
+						var delta = clock.getDelta();
+						localPlayer.animationController.update( delta );
+					})();
+
+				});
+
+			})("/characters/scarletblade/paim/SlowRun.fbx");
+
+		</script>
+-->
+		<script>
+
+			TabUI.Terrain.role.classList.add("active");
+			TabUI.Terrain.tab.classList.add("in","active");
+			TabUI.Terrain.pill.scrollIntoViewIfNeeded(false);
 
 		</script>
 
