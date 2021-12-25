@@ -821,24 +821,24 @@
 
 				//	localPlayer controller motions.
 
-					localPlayerController.addEventListener( "startIdling",  function (e) { 
+					localPlayer.controller.addEventListener( "startIdling",  function (e) { 
 						debugMode && console.log( e );
 						animationController.play( "idling"  ); 
 					});
-					localPlayerController.addEventListener( "startWalking", function (e) { 
+					localPlayer.controller.addEventListener( "startWalking", function (e) { 
 						debugMode && console.log( e );
 						animationController.play( "running" ); 
 					});
-					localPlayerController.addEventListener( "startSliding", function (e) { 
+					localPlayer.controller.addEventListener( "startSliding", function (e) { 
 						debugMode && console.log( e );
 						animationController.play( "sliding" ); 
 					});
-					localPlayerController.addEventListener( "startFalling", function (e) { 
+					localPlayer.controller.addEventListener( "startFalling", function (e) { 
 						debugMode && console.log( e );
 						animationController.play( "sliding" ); 
 					});
 
-					localPlayerController.addEventListener( "fallDown", function (e) { 
+					localPlayer.controller.addEventListener( "fallDown", function (e) { 
 						debugMode && console.log( e );
 						animationController.play( "falldown" ); 
 						animationController.motion.falldown.reset();
@@ -846,9 +846,9 @@
 
 				//	Jumping.
 
-					localPlayerController.addEventListener( "startJumping", function (e) { 
+					localPlayer.controller.addEventListener( "startJumping", function (e) { 
 						debugMode && console.log( e );
-						if ( localPlayerController.isRunning ) {
+						if ( localPlayer.controller.isRunning ) {
 							animationController.play("jumping");
 							animationController.motion.jumping.reset();
 						} else {
