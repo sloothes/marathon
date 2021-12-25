@@ -777,7 +777,7 @@
 
 				//	object is THREE.Group.
 					group.name = "Paim";
-				//	var s = 1; group.scale.set(s,s,s); // important!
+					var s = 0.00003; group.scale.set(s,s,s); // important!
 					group.position.y = -localPlayer.controller.radius;
 					debugMode && console.log( group ); 
 
@@ -788,11 +788,11 @@
 					localPlayer.controller.isRunning = true;
 					localPlayer.controller.direction += Math.PI; // important!
 					localPlayer.controller.movementSpeed = 5.01; // debug!
-					localPlayer.getObjectByName("local helper").visible = false;
+				//	localPlayer.getObjectByName("local helper").visible = false;
 
 					localPlayer.animationController = new MW.AnimationController( group );
 					debugMode && console.log( "animationController:", localPlayer.animationController );
-					localPlayer.animationController.play("running");    // important!
+					localPlayer.animationController.play("Armature|running");    // important!
 				//	localPlayer.animationController.play("mixamo.com"); // important!
 
 					var clock = new THREE.Clock();
