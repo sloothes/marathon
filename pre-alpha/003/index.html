@@ -790,9 +790,64 @@
 					localPlayer.controller.movementSpeed = 5.01; // debug!
 				//	localPlayer.getObjectByName("local helper").visible = false;
 
+				//	CleanUp animation names.
+
+					var animations = group.animations;
+					animations.forEach( function( clip ){
+						clip.name = clip.name.replace("Armature|", "").toLowerCase();
+					}); debugMode && console.log( animations ); 
+
+					/* running, falldown, t-pose, jumping, sliding, texting, phoning, idling */
+
 					localPlayer.animationController = new MW.AnimationController( group );
 					debugMode && console.log( "animationController:", localPlayer.animationController );
-					localPlayer.animationController.play("Armature|running");    // important!
+
+					animationController.motion.jumping.setLoop( THREE.LoopOnce, 0 );
+					animationController.motion.jumping.clampWhenFinished = true;
+					animationController.motion.falldown.setLoop( THREE.LoopOnce, 0 );
+					animationController.motion.falldown.clampWhenFinished = true;
+					animationController.motion["t-pose"].setLoop( THREE.LoopOnce, 0 );
+					animationController.motion["t-pose"].clampWhenFinished = true;
+
+				//	localPlayer controller motions.
+
+					localPlayerController.addEventListener( "startIdling",  function () { 
+						animationController.play( "idling"  ); 
+						droplistUpdated.dispatch( "idling" ); 
+					});
+					localPlayerController.addEventListener( "startWalking", function () { 
+						animationController.play( "running" ); 
+						droplistUpdated.dispatch( "running" ); 
+					});
+					localPlayerController.addEventListener( "startSliding", function () { 
+						animationController.play( "sliding" ); 
+						droplistUpdated.dispatch( "sliding" ); 
+					});
+					localPlayerController.addEventListener( "startFalling", function () { 
+						animationController.play( "sliding" ); 
+						droplistUpdated.dispatch( "sliding" ); 
+					});
+
+					localPlayerController.addEventListener( "fallDown", function () { 
+						animationController.play( "falldown" ); 
+						animationController.motion.falldown.reset();
+						droplistUpdated.dispatch( "falldown" ); 
+					});
+
+				//	Jumping.
+
+					localPlayerController.addEventListener( "startJumping", function () { 
+						if ( localPlayerController.isRunning ) {
+							animationController.play("jumping");
+							animationController.motion.jumping.reset();
+							droplistUpdated.dispatch( "jumping" );
+						} else {
+							animationController.play( "sliding" );
+							droplistUpdated.dispatch( "sliding" );
+						}
+					});
+
+					localPlayer.animationController.play("running");    // important!
 				//	localPlayer.animationController.play("mixamo.com"); // important!
 
 					var clock = new THREE.Clock();
