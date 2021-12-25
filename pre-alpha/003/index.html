@@ -776,8 +776,8 @@
 				loader.load( url, function( group ){
 
 				//	object is THREE.Group.
-					group.name = "TextGirl";   // "Paim";
-					var s = 0.00003; group.scale.set(s,s,s); // important!
+					group.name = "Elexis";   // "Paim";
+				//	var s = 0.00003; group.scale.set(s,s,s); // important!
 					group.position.y = -localPlayer.controller.radius;
 					debugMode && console.log( group ); 
 
@@ -793,24 +793,34 @@
 				//	CleanUp animation names.
 
 					var animations = group.animations;
-					animations.forEach( function( clip ){
-						clip.name = clip.name.replace("Armature|", "").toLowerCase();
-					}); debugMode && console.log( animations ); 
+				//	animations.forEach( function( clip ){
+				//		clip.name = clip.name.replace("Armature|", "").toLowerCase();
+				//	}); 
+					debugMode && console.log( animations ); 
 
 				/*	"running, falldown, t-pose, jumping, sliding, texting, phoning, idling"		*/
 
 					localPlayer.animationController = new MW.AnimationController( group );
 					debugMode && console.log( "animationController:", localPlayer.animationController );
 
-					localPlayer.animationController.motion.jumping.setLoop( THREE.LoopOnce, 0 );
-					localPlayer.animationController.motion.jumping.clampWhenFinished = true;
-					localPlayer.animationController.motion.falldown.setLoop( THREE.LoopOnce, 0 );
-					localPlayer.animationController.motion.falldown.clampWhenFinished = true;
-					localPlayer.animationController.motion["t-pose"].setLoop( THREE.LoopOnce, 0 );
-					localPlayer.animationController.motion["t-pose"].clampWhenFinished = true;
+				/*
+					Jumping 360 Flip, 
+					Running Backward, Running Forward, 
+					Running Jump Backward, Running Jump Forward, 
+					Elexis T-Pose, Falling, 
+					Standing Idle, Flying
+				*/
+					localPlayer.animationController.motion["Jumping 360 Flip"].setLoop( THREE.LoopOnce, 0 );
+					localPlayer.animationController.motion["Jumping 360 Flip"].clampWhenFinished = true;
+					localPlayer.animationController.motion["Running Jump Backward"].setLoop( THREE.LoopOnce, 0 );
+					localPlayer.animationController.motion["Running Jump Backward"].clampWhenFinished = true;
+					localPlayer.animationController.motion["Running Jump Forward"].setLoop( THREE.LoopOnce, 0 );
+					localPlayer.animationController.motion["Running Jump Forward"].clampWhenFinished = true;
+					localPlayer.animationController.motion["Elexis T-Pose"].setLoop( THREE.LoopOnce, 0 );
+					localPlayer.animationController.motion["Elexis T-Pose"].clampWhenFinished = true;
 
-					localPlayer.animationController.play("running");    // important!
-				//	localPlayer.animationController.play("mixamo.com"); // important!
+				//	localPlayer.animationController.play("mixamo.com");      // important!
+					localPlayer.animationController.play("Running Forward"); // important!
 
 					var clock = new THREE.Clock();
 					(function update(){
@@ -823,25 +833,29 @@
 
 					localPlayer.controller.addEventListener( "startIdling",  function (e) { 
 						debugMode && console.log( e );
-						localPlayer.animationController.play( "idling"  ); 
+						localPlayer.animationController.play( "Standing Idle"  ); 
 					});
 					localPlayer.controller.addEventListener( "startWalking", function (e) { 
 						debugMode && console.log( e );
-						localPlayer.animationController.play( "running" ); 
+						if ( localPlayer.controller.movementSpeed > 0 )
+							localPlayer.animationController.play( "Running Forward" ); 
+						else if ( localPlayer.controller.movementSpeed < 0 )
+							localPlayer.animationController.play( "Running Backward" ); 
+						else localPlayer.animationController.play( "Standing Idle" ); 
 					});
 					localPlayer.controller.addEventListener( "startSliding", function (e) { 
 						debugMode && console.log( e );
-						localPlayer.animationController.play( "sliding" ); 
+						localPlayer.animationController.play( "Falling" ); 
 					});
 					localPlayer.controller.addEventListener( "startFalling", function (e) { 
 						debugMode && console.log( e );
-						localPlayer.animationController.play( "sliding" ); 
+						localPlayer.animationController.play( "Falling" ); 
 					});
 
 					localPlayer.controller.addEventListener( "fallDown", function (e) { 
 						debugMode && console.log( e );
-						localPlayer.animationController.play( "falldown" ); 
-						localPlayer.animationController.motion.falldown.reset();
+						localPlayer.animationController.play( "Falling" ); 
+						localPlayer.animationController.motion.Falling.reset();
 					});
 
 				//	Jumping.
@@ -849,10 +863,17 @@
 					localPlayer.controller.addEventListener( "startJumping", function (e) { 
 						debugMode && console.log( e );
 						if ( localPlayer.controller.isRunning ) {
-							localPlayer.animationController.play("jumping");
-							localPlayer.animationController.motion.jumping.reset();
+
+							if ( localPlayer.controller.movementSpeed > 0 ) {
+								localPlayer.animationController.play("Running Jump Forward");
+								localPlayer.animationController.motion["Running Jump Forward"].reset();
+							} else {
+								localPlayer.animationController.play("Running Jump Backward");
+								localPlayer.animationController.motion["Running Jump Backward"].reset();
+							}
+
 						} else {
-							localPlayer.animationController.play( "sliding" );
+							localPlayer.animationController.play( "Jumping 360 Flip" );
 						}
 					});
 
