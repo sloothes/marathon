@@ -793,20 +793,26 @@
 				//	CleanUp animation names.
 
 					var animations = group.animations;
-				//	animations.forEach( function( clip ){
-				//		clip.name = clip.name.replace("Armature|", "").toLowerCase();
-				//	}); 
+					animations.forEach( function( clip ){
+						clip.name = clip.name.replace("Armature|", "").toLowerCase();
+					}); 
 					debugMode && console.log( animations ); 
 
-				/*	"running, falldown, t-pose, jumping, sliding, texting, phoning, idling"		*/
+				/*	
+					"running, falldown, 
+					t-pose, jumping, sliding, 
+					texting, phoning, idling"
+				*/
 
 					localPlayer.animationController = new MW.AnimationController( group );
 					debugMode && console.log( "animationController:", localPlayer.animationController );
 
 				/*
 					Jumping 360 Flip, 
-					Running Backward, Running Forward, 
-					Running Jump Backward, Running Jump Forward, 
+					Running Backward, 
+					Running Forward, 
+					Running Jump Backward, 
+					Running Jump Forward, 
 					Elexis T-Pose, Falling, 
 					Standing Idle, Flying
 				*/
