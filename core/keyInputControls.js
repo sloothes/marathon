@@ -36,6 +36,8 @@
 			var movementSpeed = resetMovementSpeedDirection(); 
 			if ( backward ) 
 				characterController.movementSpeed = -movementSpeed;
+			else
+				characterController.movementSpeed =  movementSpeed;
 		}
 
 		function updateControllerDirection( dt ){
