@@ -802,12 +802,12 @@
 					localPlayer.animationController = new MW.AnimationController( group );
 					debugMode && console.log( "animationController:", localPlayer.animationController );
 
-					animationController.motion.jumping.setLoop( THREE.LoopOnce, 0 );
-					animationController.motion.jumping.clampWhenFinished = true;
-					animationController.motion.falldown.setLoop( THREE.LoopOnce, 0 );
-					animationController.motion.falldown.clampWhenFinished = true;
-					animationController.motion["t-pose"].setLoop( THREE.LoopOnce, 0 );
-					animationController.motion["t-pose"].clampWhenFinished = true;
+					localPlayer.animationController.motion.jumping.setLoop( THREE.LoopOnce, 0 );
+					localPlayer.animationController.motion.jumping.clampWhenFinished = true;
+					localPlayer.animationController.motion.falldown.setLoop( THREE.LoopOnce, 0 );
+					localPlayer.animationController.motion.falldown.clampWhenFinished = true;
+					localPlayer.animationController.motion["t-pose"].setLoop( THREE.LoopOnce, 0 );
+					localPlayer.animationController.motion["t-pose"].clampWhenFinished = true;
 
 					localPlayer.animationController.play("running");    // important!
 				//	localPlayer.animationController.play("mixamo.com"); // important!
@@ -823,25 +823,25 @@
 
 					localPlayer.controller.addEventListener( "startIdling",  function (e) { 
 						debugMode && console.log( e );
-						animationController.play( "idling"  ); 
+						localPlayer.animationController.play( "idling"  ); 
 					});
 					localPlayer.controller.addEventListener( "startWalking", function (e) { 
 						debugMode && console.log( e );
-						animationController.play( "running" ); 
+						localPlayer.animationController.play( "running" ); 
 					});
 					localPlayer.controller.addEventListener( "startSliding", function (e) { 
 						debugMode && console.log( e );
-						animationController.play( "sliding" ); 
+						localPlayer.animationController.play( "sliding" ); 
 					});
 					localPlayer.controller.addEventListener( "startFalling", function (e) { 
 						debugMode && console.log( e );
-						animationController.play( "sliding" ); 
+						localPlayer.animationController.play( "sliding" ); 
 					});
 
 					localPlayer.controller.addEventListener( "fallDown", function (e) { 
 						debugMode && console.log( e );
-						animationController.play( "falldown" ); 
-						animationController.motion.falldown.reset();
+						localPlayer.animationController.play( "falldown" ); 
+						localPlayer.animationController.motion.falldown.reset();
 					});
 
 				//	Jumping.
@@ -849,10 +849,10 @@
 					localPlayer.controller.addEventListener( "startJumping", function (e) { 
 						debugMode && console.log( e );
 						if ( localPlayer.controller.isRunning ) {
-							animationController.play("jumping");
-							animationController.motion.jumping.reset();
+							localPlayer.animationController.play("jumping");
+							localPlayer.animationController.motion.jumping.reset();
 						} else {
-							animationController.play( "sliding" );
+							localPlayer.animationController.play( "sliding" );
 						}
 					});
 
