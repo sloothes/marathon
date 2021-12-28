@@ -469,7 +469,7 @@
 					removeTerrain(); return false;
 				});
 
-				removeTerrain();
+				setTimeout(removeTerrain, 0);
 
 				function removeTerrain(){
 
@@ -819,10 +819,10 @@
 				*/
 					localPlayer.animationController.motion["jumping 360 flip"].setLoop( THREE.LoopOnce, 0 );
 					localPlayer.animationController.motion["jumping 360 flip"].clampWhenFinished = true;
-					localPlayer.animationController.motion["running jump backward"].setDuration(1.1);
+					localPlayer.animationController.motion["running jump backward"].setDuration(1.0);
 					localPlayer.animationController.motion["running jump backward"].setLoop( THREE.LoopOnce, 0 );
 					localPlayer.animationController.motion["running jump backward"].clampWhenFinished = true;
-					localPlayer.animationController.motion["running jump forward"].setDuration(1.1);
+					localPlayer.animationController.motion["running jump forward"].setDuration(1.0);
 					localPlayer.animationController.motion["running jump forward"].setLoop( THREE.LoopOnce, 0 );
 					localPlayer.animationController.motion["running jump forward"].clampWhenFinished = true;
 					localPlayer.animationController.motion["elexis t-pose"].setLoop( THREE.LoopOnce, 0 );
