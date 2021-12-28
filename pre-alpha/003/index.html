@@ -788,7 +788,7 @@
 					localPlayer.controller.isRunning = true;
 					localPlayer.controller.direction += Math.PI; // important!
 					localPlayer.controller.movementSpeed = 5.01; // debug!
-				//	localPlayer.getObjectByName("local helper").visible = false;
+					localPlayer.getObjectByName("local helper").visible = false;
 
 				//	CleanUp animation names.
 
@@ -898,6 +898,8 @@
 			TabUI.Terrain.role.classList.add("active");
 			TabUI.Terrain.tab.classList.add("in","active");
 			TabUI.Terrain.pill.scrollIntoViewIfNeeded(false);
+
+			if (terrain) scene.remove(terrain);
 
 		</script>
 
