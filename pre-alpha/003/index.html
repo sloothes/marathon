@@ -852,17 +852,17 @@
 					});
 					localPlayer.controller.addEventListener( "startSliding", function (e) { 
 						debugMode && console.log( e );
-						localPlayer.animationController.play( "falling" ); 
+						localPlayer.animationController.play( "falling flying" ); 
 					});
 					localPlayer.controller.addEventListener( "startFalling", function (e) { 
 						debugMode && console.log( e );
-						localPlayer.animationController.play( "falling" ); 
+						localPlayer.animationController.play( "falling flying" ); 
 					});
 
 					localPlayer.controller.addEventListener( "fallDown", function (e) { 
 						debugMode && console.log( e );
-						localPlayer.animationController.play( "falling" ); 
-						localPlayer.animationController.motion.falling.reset();
+						localPlayer.animationController.play( "falling flying" ); 
+						localPlayer.animationController.motion["falling flying"].reset();
 					});
 
 				//	Jumping.
@@ -874,7 +874,7 @@
 							if ( localPlayer.controller.movementSpeed > 0 ) {
 								localPlayer.animationController.play("running jump forward");
 								localPlayer.animationController.motion["running jump forward"].reset();
-							} else {
+							} else if ( localPlayer.controller.movementSpeed < 0 ) {
 								localPlayer.animationController.play("running jump backward");
 								localPlayer.animationController.motion["running jump backward"].reset();
 							}
