@@ -469,6 +469,8 @@
 					removeTerrain(); return false;
 				});
 
+				removeTerrain();
+
 				function removeTerrain(){
 
 					if (terrain) {
@@ -898,8 +900,6 @@
 			TabUI.Terrain.role.classList.add("active");
 			TabUI.Terrain.tab.classList.add("in","active");
 			TabUI.Terrain.pill.scrollIntoViewIfNeeded(false);
-
-			if (terrain) scene.remove(terrain);
 
 		</script>
 
