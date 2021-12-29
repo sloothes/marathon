@@ -879,6 +879,9 @@
 							} else if ( localPlayer.controller.movementSpeed < 0 ) {
 								localPlayer.animationController.play("running jump backward");
 								localPlayer.animationController.motion["running jump backward"].reset();
+							} else {
+								localPlayer.animationController.play( "jumping 360 flip.002" );
+								localPlayer.animationController.motion["jumping 360 flip.002"].reset();
 							}
 
 						} else {
