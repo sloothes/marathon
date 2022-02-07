@@ -110,7 +110,7 @@
 	const world = new MW.World();
 
 	const octree = (function(){
-		var x = 1500, y = 1500, z = 1500;
+		var x = 150, y = 150, z = 150;
 		var min = new THREE.Vector3( -x, -y, -z );
 		var max = new THREE.Vector3(  x,  y,  z );
 		var partition = 5; // nodes: Math.pow( 8, partition )
