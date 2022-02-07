@@ -150,6 +150,9 @@
 				var loader = new THREE.FBXLoader();
 				loader.load( url, function( group ){
 
+					var s = 10;
+					group.scale(s,s,s);
+					group.position.y = -2;
 					scene.add( group ); 
 
 				});
