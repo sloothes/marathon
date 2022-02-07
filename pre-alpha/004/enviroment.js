@@ -130,23 +130,23 @@
 
 
 //	Ground (component).
-/*
-	const ground = new THREE.Mesh(
-		new THREE.PlaneGeometry( 300, 300, 1, 1 ).rotateX(-Math.PI/2),
-		new THREE.MeshLambertMaterial({ 
-			opacity:1, 
-			color:0x829ec4,
-		})
-	);
+//
+//	const ground = new THREE.Mesh(
+//		new THREE.PlaneGeometry( 300, 300, 1, 1 ).rotateX(-Math.PI/2),
+//		new THREE.MeshLambertMaterial({ 
+//			opacity:1, 
+//			color:0x829ec4,
+//		})
+//	);
+//
+//	ground.name = "ground";
+//	ground.position.y = 0;
+//	octree.importThreeMesh( ground ); // important!
 
-	ground.name = "ground";
-	ground.position.y = 0;
-	octree.importThreeMesh( ground ); // important!
-*/
 
 //	Ground Helper (component).
 
-	const groundHelper = new THREE.GridHelper( 600, 600, 0x444444, 0x444444 );
+	const groundHelper = new THREE.GridHelper( 500, 500, 0x444444, 0x444444 );
 	groundHelper.name = "ground helper";
 	scene.add( groundHelper );
 
