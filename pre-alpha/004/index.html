@@ -146,6 +146,16 @@
 
 		//	upload A city.
 
+			(function( url ){
+				var loader = new THREE.FBXLoader();
+				loader.load( url, function( group ){
+
+					scene.add( group ); 
+
+				});
+
+			})("/cities/city/City N030310.fbx");
+
 		</script>
 
 
