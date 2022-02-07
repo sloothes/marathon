@@ -152,12 +152,12 @@
 				loader.load( url, function( group ){
 
 					var mesh = group.children[0];
-					mesh.position.y = -1.5;
+				//	mesh.position.y = -1.5;
 					var geometry = new THREE.Geometry();
 					mesh.geometry = geometry.fromBufferGeometry(mesh.geometry);
+					octree.importThreeMesh(mesh);
 
 					scene.add( mesh ); 
-					octree.importThreeMesh(mesh);
 
 				});
 
