@@ -150,10 +150,13 @@
 				var loader = new THREE.FBXLoader();
 				loader.load( url, function( group ){
 
-				//	var s = 10;
-				//	group.scale(s,s,s);
-					group.position.y = -1.5;
-					scene.add( group ); 
+					var mesh = group.children[0];
+					mesh.position.y = -1.5;
+					var geometry = new THREE.Geometry();
+					mesh.geometry = geometry.fromBufferGeometry(mesh.geometry);
+
+					scene.add( mesh ); 
+					octree.importThreeMesh(mesh);
 
 				});
 
